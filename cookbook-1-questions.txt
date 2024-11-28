@@ -1,0 +1,5 @@
+Give me a high level summary of e-invoice implementation in Malaysia. How tax payer of different category are affected.
+Please describe the impact posted to tax payer by annual revenue category.
+Show me the implemented timeline for tax payer of different annual revenue margin.
+Tell me about the interim relaxation period.
+I would like to create a program to help local business to onboard e-invoice. Please help me to draw a program outline.
