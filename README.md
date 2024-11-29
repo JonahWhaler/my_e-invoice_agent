@@ -1,9 +1,13 @@
 # Prerequisite
-- **Ollama**: https://ollama.com/
+- **Ollama**: This is needed to use models through Ollama.
+  - [Download](https://ollama.com/)
   - Remember to pull models you need with `ollama pull <model_name>:<tag>`
-- **OpenAI API Key**: https://platform.openai.com/docs/quickstart
-- **llm-agent-toolkit**: `pip install llm-agent-toolkit`
-- **ffmpeg**: `apt install ffmpeg` (This is needed to handle audio files.)
+- **OpenAI API Key**: This is needed to use OpenAI's API.
+  - [Apply API Key](https://platform.openai.com/docs/quickstart)
+- **llm-agent-toolkit**: This is the Python package we will be using.
+  - `pip install llm-agent-toolkit`
+- **FFmpeg**: This is needed to handle audio files.
+  - [Download FFmpeg](https://www.ffmpeg.org/download.html).
 
 # Diagrams
 ## Build Knowledge Base
