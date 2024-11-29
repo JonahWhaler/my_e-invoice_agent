@@ -1,7 +1,7 @@
 import asyncio
 import json
 from random import choice as random_choice
-
+import requests  # type: ignore
 import aiohttp
 from duckduckgo_search import DDGS
 from bs4 import BeautifulSoup  # type: ignore
@@ -57,7 +57,45 @@ class DDGSearch(Tool):
         return self.__pause_second
 
     def run(self, params: str) -> str:
-        return asyncio.run(self.run_async(params))
+        j_params = json.loads(params)
+        valid_input, error_msg = self.validate(**j_params)
+        if not valid_input and error_msg:
+            return error_msg
+
+        query = j_params.get("query")
+        top_n = j_params.get("top_n", 20)
+        top_search = []
+        with DDGS() as ddgs:
+            for r in ddgs.text(
+                keywords=query,
+                region=self.region,
+                safesearch=self.safe_search,
+                max_results=top_n,
+            ):
+                top_search.append(r)
+        for result in top_search:
+            try:
+                http_response = requests.get(url=result["href"], timeout=2)
+                http_response.raise_for_status()
+                text_data = http_response.text
+                soup = BeautifulSoup(text_data, "html.parser")
+                html_body = soup.find("body")
+                if html_body:
+                    result["html"] = soup.find("body").text
+                else:
+                    result["html"] = (
+                        "Webpage not available, either due to an error or due to lack of permissions to the site."
+                    )
+            except requests.HTTPError as http_error:
+                result["html"] = (
+                    f"Webpage not available as a result of HTTP Error: {http_error}"
+                )
+            except Exception:
+                result["html"] = (
+                    "Webpage not available, either due to an error or due to lack of permissions to the site."
+                )
+        web_search_result = "$$$$$$$".join([f"{json.dumps(r)}" for r in top_search])
+        return web_search_result
 
     async def run_async(self, params: str) -> str:
         j_params = json.loads(params)
