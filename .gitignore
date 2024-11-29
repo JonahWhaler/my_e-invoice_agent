@@ -166,3 +166,4 @@ dev/
 snippet/output/
 
 .pypirc
+output/
